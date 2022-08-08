@@ -1,0 +1,19 @@
+{% extends 'AppExpo/base.html' %}
+
+{% block titulo %} {{mensaje_pro1}} {% endblock  %}
+
+{% block mensaje %}
+
+<h1>{{mensaje_pro2}}</h1>
+
+{% endblock %}
+
+{% block contenido %}
+
+<p>Listado de productos:</p>
+
+    {% for producto in productos %}
+        <p style="color: blue">{{producto.modelo}}</p>    
+    {% endfor %}
+
+{% endblock %}

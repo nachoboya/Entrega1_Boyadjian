@@ -1,0 +1,20 @@
+{% extends 'AppExpo/base.html' %}
+
+{% block titulo %} Crear Marca {% endblock  %}
+
+{% block mensaje %}
+
+Desde esta vista se puede cargar una nueva marca
+
+{% endblock %}
+
+{% block contenido %}
+
+<form method="post">{% csrf_token %}
+
+    {{ form_marca.as_p }}
+
+    <input type="submit" value="Crear">
+</form>
+
+{% endblock %}

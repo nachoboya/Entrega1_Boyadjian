@@ -1,0 +1,20 @@
+{% extends 'AppExpo/base.html' %}
+
+{% block titulo %} Buscador {% endblock  %}
+
+{% block mensaje %}
+
+Desde este buscador podes encontrar cualquiera de nuestros productos
+
+{% endblock %}
+
+{% block contenido %}
+
+<h1>Resultados</h1>
+
+    {% for producto in productos %}
+        <p>{{producto.modelo}}</p>
+    {% endfor %}
+
+{% endblock %}
+

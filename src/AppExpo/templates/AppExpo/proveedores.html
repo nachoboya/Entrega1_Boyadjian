@@ -1,0 +1,19 @@
+{% extends 'AppExpo/base.html' %}
+
+{% block titulo %} {{mensaje_prov1}} {% endblock  %}
+
+{% block mensaje %}
+
+<h1>{{mensaje_prov2}}</h1>
+
+{% endblock %}
+
+{% block contenido %}
+
+<p>Listado de proveedores:</p>
+
+    {% for proveedor in proveedores %}
+        <p style="color: green">{{proveedor.razon}}</p>    
+    {% endfor %}
+
+{% endblock %}

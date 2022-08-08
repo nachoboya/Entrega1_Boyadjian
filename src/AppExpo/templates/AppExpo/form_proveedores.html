@@ -1,0 +1,20 @@
+{% extends 'AppExpo/base.html' %}
+
+{% block titulo %} Crear Proveedor {% endblock  %}
+
+{% block mensaje %}
+
+Desde esta vista se puede cargar un nuevo proveedor
+
+{% endblock %}
+
+{% block contenido %}
+
+<form method="post">{% csrf_token %}
+
+    {{ form_proveedor.as_p }}
+
+    <input type="submit" value="Crear">
+</form>
+
+{% endblock %}

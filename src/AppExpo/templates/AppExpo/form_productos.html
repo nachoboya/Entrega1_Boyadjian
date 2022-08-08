@@ -1,0 +1,23 @@
+{% extends 'AppExpo/base.html' %}
+
+{% block titulo %} Crear Producto {% endblock  %}
+
+{% block mensaje %}
+
+Desde esta vista se puede cargar un nuevo producto
+
+{% endblock %}
+
+{% block contenido %}
+
+<form method="post">{% csrf_token %}
+
+    {{ form_producto.as_p }}
+
+    <input type="submit" value="Crear">
+</form>
+
+{% endblock %}
+
+
+    

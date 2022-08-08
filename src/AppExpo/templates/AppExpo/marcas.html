@@ -1,0 +1,19 @@
+{% extends 'AppExpo/base.html' %}
+
+{% block titulo %} {{mensaje_mar1}} {% endblock  %}
+
+{% block mensaje %}
+
+<h1>{{mensaje_mar2}}</h1>
+
+{% endblock %}
+
+{% block contenido %}
+
+<p>Listado de marcas:</p>
+
+    {% for marca in marcas %}
+        <p style="color: red">{{marca.nombre}}</p>    
+    {% endfor %}
+
+{% endblock %}
