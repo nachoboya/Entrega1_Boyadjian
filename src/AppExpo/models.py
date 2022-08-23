@@ -6,9 +6,10 @@ class Producto(models.Model):
 
     modelo = models.CharField(max_length=40)
     articulo = models.IntegerField()
+    stock = models.BooleanField()
 
     def __str__(self):
-        return f"{self.modelo} - {self.articulo}"
+        return f"{self.modelo} - {self.articulo} - {self.stock}"
 
 class Proveedores(models.Model):
     razon = models.CharField(max_length=30)
@@ -16,11 +17,11 @@ class Proveedores(models.Model):
     ubicacion = models.CharField(max_length=30)
 
     def __str__(self):
-        return f"{self.razon}"
+        return f"{self.razon} - {self.email} - {self.ubicacion}"
 
 class Marcas(models.Model):
     nombre = models.CharField(max_length=30)
     nacionalidad = models.CharField(max_length=30)
 
     def __str__(self):
-        return f"{self.nombre}"
+        return f"{self.nombre} - {self.nacionalidad}"

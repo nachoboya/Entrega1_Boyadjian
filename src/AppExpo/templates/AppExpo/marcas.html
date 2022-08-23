@@ -10,10 +10,19 @@
 
 {% block contenido %}
 
+<p>Desde este formulario se puede cargar una nueva marca:</p>
+
+<form method="post">{% csrf_token %}
+
+    {{ form_marca.as_p }}
+
+    <input type="submit" value="Crear">
+</form>
+
 <p>Listado de marcas:</p>
 
     {% for marca in marcas %}
-        <p style="color: red">{{marca.nombre}}</p>    
+        <p style="color: red">{{marca.nombre}} <a href="{%url 'borrar_marca' marca.id %}">Eliminar</a></p>    
     {% endfor %}
 
 {% endblock %}

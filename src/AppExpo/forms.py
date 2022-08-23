@@ -1,10 +1,11 @@
-from django.forms import Form, IntegerField, CharField, EmailField
+from django.forms import Form, IntegerField, CharField, EmailField, BooleanField
 
 
 class ProductoFormulario(Form):
 
     modelo = CharField()
     articulo = IntegerField()
+    stock = BooleanField()
 
 
 
