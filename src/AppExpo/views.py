@@ -4,6 +4,16 @@ from AppExpo.models import Producto, Proveedores, Marcas
 from AppExpo.forms import ProductoFormulario, ProveedorFormulario, MarcaFormulario
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
+#Auth imports
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth import login, logout, authenticate
+
+from AppExpo.forms import UserCustomCreationForm
+
+#Permisos de usuario
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
+
 
 # Create your views here.
 
@@ -11,6 +21,7 @@ def inicio(request):
 
     return render(request, "AppExpo/index.html")
 
+@login_required
 def productos(request):
 
     productos = Producto.objects.all()
@@ -236,7 +247,7 @@ def actualizar_producto(request,id_producto):
 
         return redirect("productos")
 
-class ProveedoresList(ListView):
+class ProveedoresList(LoginRequiredMixin, ListView):
 
     model = Proveedores
     template_name = "AppExpo/proveedores_list.html"
@@ -262,3 +273,52 @@ class ProveedoresDelete(DeleteView):
 
     model = Proveedores
     success_url = "/proveedores/"
+
+def iniciar_sesion(request):
+    if request.method == "GET":
+        formulario = AuthenticationForm()
+
+        contexto = {
+            "form" : formulario
+        }
+        
+        return render(request ,"AppExpo/login.html" , contexto)
+    else:
+        formulario = AuthenticationForm(request, data=request.POST)
+
+        if formulario.is_valid():
+            data = formulario.cleaned_data
+
+            usuario = authenticate(username=data.get("username"), password=data.get("password"))
+
+            if usuario is not None:
+                login(request, usuario)
+                return redirect("inicio")
+            else:
+                contexto= {
+                    "error": "Credenciales no válidas",
+                    "form": formulario
+                }
+                return render(request ,"AppExpo/login.html" , contexto)
+        else:
+            contexto= {
+                    "error": "Formulario no válido",
+                    "form": formulario
+                }
+            return render(request ,"AppExpo/login.html" , contexto)
+
+
+def registrar_usuario(request):
+    if request.method == "GET":
+        formulario = UserCustomCreationForm()
+        return render(request, "AppExpo/registro.html", {"form":formulario})
+
+    else:
+        formulario = UserCustomCreationForm(request.POST)
+
+        if formulario.is_valid():
+            formulario.save()
+
+            return redirect("inicio")
+        else: 
+            return render(request, "AppExpo/registro.html", {"form":formulario, "error": "Formulario no válido"})
