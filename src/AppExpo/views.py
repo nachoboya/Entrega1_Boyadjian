@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from AppExpo.models import Producto, Proveedores, Marcas
-from AppExpo.forms import ProductoFormulario, ProveedorFormulario, MarcaFormulario
+from AppExpo.models import Producto, Proveedores, Marcas, Avatar
+from AppExpo.forms import ProductoFormulario, ProveedorFormulario, MarcaFormulario, UserEditForm, AvatarForm
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
 #Auth imports
@@ -13,15 +13,18 @@ from AppExpo.forms import UserCustomCreationForm
 #Permisos de usuario
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 
 
 # Create your views here.
 
 def inicio(request):
 
-    return render(request, "AppExpo/index.html")
+    avatar = Avatar.objects.filter(usuario=request.user).first()
 
-@login_required
+    return render(request, "AppExpo/index.html", {"imagen":avatar.imagen.url})
+
+@login_required 
 def productos(request):
 
     productos = Producto.objects.all()
@@ -322,3 +325,47 @@ def registrar_usuario(request):
             return redirect("inicio")
         else: 
             return render(request, "AppExpo/registro.html", {"form":formulario, "error": "Formulario no válido"})
+
+
+@login_required
+def editar_usuario(request):
+
+    if request.method == "GET":
+        form = UserEditForm(initial={"email":request.user.email,"first_name":request.user.first_name, "last_name":request.user.last_name})
+        return render(request, "AppExpo/update_user.html",{"form": form})
+    else:
+        form = UserEditForm(request.POST)
+
+        if form.is_valid():
+            data = form.cleaned_data
+
+            usuario = request.user
+
+            usuario.email = data["email"]
+            usuario.password1 = data["password1"]
+            usuario.password2 = data["password2"]
+            usuario.first_name = data["first_name"]
+            usuario.last_name = data["last_name"]
+
+            usuario.save()
+            return redirect("inicio")
+        return render(request, "AppExpo/update_user.html",{"form": form})
+
+@login_required
+def agregar_avatar(request):
+
+    if request.method == "GET":
+        form = AvatarForm()
+        contexto = {"form":form}
+        return render(request, "AppExpo/agregar_avatar.html", contexto)
+    else:
+        form = AvatarForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            data = form.cleaned_data
+
+            usuario = User.objects.filer(username=request.user.username).first()
+            avatar = Avatar(usuario=usuario, imagen=data["imagen"])
+
+            avatar.save()
+            

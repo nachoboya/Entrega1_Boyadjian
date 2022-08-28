@@ -10,7 +10,8 @@
 
 {% block contenido %}
 
-<h1>Bienvenido {{ request.user.username }}!</h1>
+<h1>Bienvenido {{ request.user.get_full_name }}!</h1>
+<h2>Último inicio de sesión: {{ request.user.last_login }}</h2>
 
 <div align="center"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpn7k1csPm1GsMgkc6viFC6fx60z2z5ePqfQ&usqp=CAU" width="400px" height="200px"></div>
 

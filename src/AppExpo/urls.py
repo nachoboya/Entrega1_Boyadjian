@@ -1,3 +1,4 @@
+from unicodedata import name
 from django.urls import path
 from AppExpo.views import *
 
@@ -23,9 +24,8 @@ urlpatterns = [
 
     path("login/", iniciar_sesion, name='iniciar_sesion'),
     path("register/",registrar_usuario, name='registro'),
-    path("logout/", LogoutView.as_view(template_name="AppExpo/logout.html"), name="logout")
-
-    
-
+    path("logout/", LogoutView.as_view(template_name="AppExpo/logout.html"), name="logout"),
+    path("edit/", editar_usuario, name="editar_usuario"),
+    path("avatar/", agregar_avatar, name="agregar_avatar"),
     
 ]
